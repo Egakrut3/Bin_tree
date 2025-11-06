@@ -11,6 +11,8 @@ errno_t get_Bin_tree_node(Bin_tree_node **const dest) {
     return 0;
 }
 
+
+
 static void Bin_subtree_Dtor(Bin_tree_node *const node_ptr) {
     if (!node_ptr) {
         return;
@@ -40,7 +42,7 @@ errno_t Bin_tree_verify(Bin_tree const *const tree_ptr, errno_t *const err_ptr) 
 static void tree_declare(FILE *const out_stream, Bin_tree_node const *const cur_node) { //TODO - add tabulation
     char const border_color[]     = "black",
 
-               node_color[]       = "yellow";
+               node_color[]       = "lightgreen";
 
     if (!cur_node) {
         return;
@@ -78,7 +80,8 @@ static void tree_declare(FILE *const out_stream, Bin_tree_node const *const cur_
 }
 
 static void tree_dump(FILE *const out_stream, Bin_tree_node const *const cur_node) { //TODO - add tabulation
-    char const arrow_color[] = "green";
+    char const left_arrow_color[]  = "blue",
+               right_arrow_color[] = "red";
 
     if (!cur_node) {
         return;
@@ -88,14 +91,14 @@ static void tree_dump(FILE *const out_stream, Bin_tree_node const *const cur_nod
         fprintf_s(out_stream, "\tnode%p:left -> node%p:top"
                               "[color = %s]\n",
                               cur_node, cur_node->left,
-                              arrow_color);
+                              left_arrow_color);
     }
 
     if(cur_node->right) {
         fprintf_s(out_stream, "\tnode%p:right -> node%p:top"
                               "[color = %s]\n",
                               cur_node, cur_node->right,
-                              arrow_color);
+                              right_arrow_color);
     }
 
     tree_dump(out_stream, cur_node->left);
