@@ -21,14 +21,6 @@ int main(int const argc, char const *const *const argv) {
         Config_Dtor(&cur_config);   \
         Bin_tree_Dtor(&cur_tree);
 
-    FILE *dump_stream = nullptr;
-    MAIN_CHECK_FUNC(fopen_s, &dump_stream, "./Visual_html/Tree_log.html", "w");
-    #undef FINAL_CODE
-    #define FINAL_CODE              \
-        Config_Dtor(&cur_config);   \
-        Bin_tree_Dtor(&cur_tree);   \
-        fclose(dump_stream);
-
     Bin_tree_node *v1 = nullptr,
                   *v2 = nullptr,
                   *v3 = nullptr,
@@ -64,6 +56,8 @@ int main(int const argc, char const *const *const argv) {
     v6->left  = nullptr;
     v6->right = nullptr;
 
+    FILE *dump_stream = nullptr;
+    MAIN_CHECK_FUNC(fopen_s, &dump_stream, "./Visual_html/Tree_log.html", "w");
     #undef FINAL_CODE
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);   \
