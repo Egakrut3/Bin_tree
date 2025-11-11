@@ -3,8 +3,8 @@
 
 #include "Common.h"
 
-#define UNKNOWN_OPTION              1'000
-#define NOT_ENOUGH_OPTION_ARGUMENTS 1'001
+#define UNKNOWN_OPTION              500
+#define NOT_ENOUGH_OPTION_ARGUMENTS 501
 
 struct Config
 {
@@ -15,6 +15,6 @@ struct Config
 
 errno_t Config_Ctor(Config *config_ptr, size_t argc, char const *const *argv);
 
-void Config_Dtor(Config *config_ptr);
+errno_t Config_Dtor(Config *config_ptr);
 
 #endif

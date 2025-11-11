@@ -26,6 +26,7 @@ do {                        \
 
 #define CHECK_FUNC(func, ...)                       \
 do {                                                \
+    errno = 0;                                      \
     errno_t err_val = func(__VA_ARGS__);            \
     if (err_val) {                                  \
         PRINT_LINE();                               \
@@ -38,6 +39,7 @@ do {                                                \
 
 #define MAIN_CHECK_FUNC(func, ...)                  \
 do {                                                \
+    errno = 0;                                      \
     errno_t err_val = func(__VA_ARGS__);            \
     if (err_val) {                                  \
         PRINT_LINE();                               \
@@ -55,8 +57,6 @@ struct Position_info {
                *function_name;
     size_t     line;
 };
-errno_t Position_info_Ctor(char const *file_name, char const *function_name,
-                           size_t line); //TODO - 
 
 struct Var_info {
     Position_info position;
@@ -64,5 +64,6 @@ struct Var_info {
 };
 
 size_t const CANARY = 0XFACE'FACE'FACE'FACE;
+#define ALREADY_DELETED 666
 
 #endif

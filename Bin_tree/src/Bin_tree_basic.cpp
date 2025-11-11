@@ -3,32 +3,82 @@
 #undef FINAL_CODE
 #define FINAL_CODE
 
-errno_t get_Bin_tree_node(Bin_tree_node **const dest) {
-    assert(dest);
+errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
+                           Bin_tree_node *const left, Bin_tree_node *const right,
+                           const_tree_elem_t const val) {
+    assert(node_ptr); assert(!node_ptr->is_valid);
 
-    CHECK_FUNC(My_calloc, (void **)dest, 1, sizeof(Bin_tree_node));
+    node_ptr->left  = left;
+    node_ptr->right = right;
+    TREE_ELEM_COPY(node_ptr->val, val);
+
+    node_ptr->is_valid = true;
+    return 0;
+}
+
+errno_t Bin_tree_node_Dtor(Bin_tree_node *const node_ptr) {
+    assert(node_ptr);
+
+    if (!node_ptr->is_valid) {
+        return ALREADY_DELETED;
+    }
+
+    TREE_ELEM_DTOR(node_ptr->val);
+
+    node_ptr->is_valid = false;
+    return 0;
+}
+
+errno_t Bin_tree_node_verify(Bin_tree_node *const node_ptr, errno_t *const err_ptr) {
+    assert(node_ptr);
+
+    *err_ptr = 0;
+
+    if (!node_ptr->is_valid) {
+        *err_ptr |= TREE_NODE_INVALID;
+    }
 
     return 0;
 }
 
+errno_t get_new_Bin_tree_node(Bin_tree_node **const dest,
+                              Bin_tree_node *const left, Bin_tree_node *const right,
+                              const_tree_elem_t const val) {
+    assert(dest);
 
+    CHECK_FUNC(My_calloc, (void **)dest, 1, sizeof(Bin_tree_node));
+    CHECK_FUNC(Bin_tree_node_Ctor, *dest, left, right, val);
 
-static void Bin_subtree_Dtor(Bin_tree_node *const node_ptr) {
-    if (!node_ptr) {
-        return;
-    }
-
-    Bin_subtree_Dtor(node_ptr->left);
-    Bin_subtree_Dtor(node_ptr->right);
-    free(node_ptr);
+    return 0;
 }
 
-void Bin_tree_Dtor(Bin_tree *const tree_ptr) {
+errno_t Bin_tree_Ctor(Bin_tree *const tree_ptr
+           ON_DEBUG(, Var_info const var_info)) {
+    assert(tree_ptr); assert(!tree_ptr->is_valid);
+    ON_DEBUG(
+    assert(var_info.position.file_name); assert(var_info.position.function_name);
+    assert(var_info.name);
+    )
+
+    ON_DEBUG(tree_ptr->var_info = var_info;)
+
+    CHECK_FUNC(get_new_Bin_tree_node, &tree_ptr->root, nullptr, nullptr, INITIAL_VAL);
+
+    tree_ptr->is_valid = true;
+    return 0;
+}
+
+errno_t Bin_tree_Dtor(Bin_tree *const tree_ptr) {
     assert(tree_ptr);
 
-    Bin_subtree_Dtor(tree_ptr->root);
+    if (!tree_ptr->is_valid) {
+        return ALREADY_DELETED;
+    }
+
+    CHECK_FUNC(Bin_subtree_Dtor, tree_ptr->root);
 
     tree_ptr->is_valid = false;
+    return 0;
 }
 
 errno_t Bin_tree_verify(Bin_tree const *const tree_ptr, errno_t *const err_ptr) {
@@ -108,6 +158,11 @@ static void tree_dump(FILE *const out_stream, Bin_tree_node const *const cur_nod
 errno_t Bin_tree_visual_dump(Bin_tree const *const tree_ptr, FILE *const out_stream,
                             Position_info const from_where) {
     assert(tree_ptr); assert(out_stream);
+    ON_DEBUG(
+    assert(tree_ptr->var_info.position.file_name); assert(tree_ptr->var_info.position.function_name);
+    assert(tree_ptr->var_info.name);
+    )
+    assert(from_where.file_name); assert(from_where.function_name);
 
     errno_t verify_err = 0;
     CHECK_FUNC(Bin_tree_verify, tree_ptr, &verify_err);

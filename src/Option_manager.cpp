@@ -76,9 +76,14 @@ errno_t Config_Ctor(Config *const config_ptr, size_t const argc, char const *con
     return 0;
 }
 
-void Config_Dtor(Config *const config_ptr)
+errno_t Config_Dtor(Config *const config_ptr)
 {
     assert(config_ptr);
 
+    if (!config_ptr->is_valid) {
+        return ALREADY_DELETED;
+    }
+
     config_ptr->is_valid = false;
+    return 0;
 }

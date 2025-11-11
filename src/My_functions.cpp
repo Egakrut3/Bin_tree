@@ -1,5 +1,6 @@
 #include "My_functions.h"
 #include <stdarg.h>
+#include <string.h>
 
 #undef FINAL_CODE
 #define FINAL_CODE
@@ -90,5 +91,17 @@ errno_t My_scanf_s(size_t const count, char const *__restrict const format, ...)
     }
 
     CLEAR_RESOURCES();
+    return 0;
+}
+
+errno_t My_strdup(char **const dest, char const *const src) {
+    assert(dest); assert(src);
+
+    char *ptr = strdup(src);
+    if (!ptr) {
+        return errno;
+    }
+
+    *dest = ptr;
     return 0;
 }

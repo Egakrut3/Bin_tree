@@ -21,7 +21,7 @@ CXX_FLAGS = -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-
 
 TARGET_LIB = $(addprefix $(LIB_DIR), libBin_tree.a)
 
-OBJ = Bin_tree_basic
+OBJ = Bin_tree_basic Bin_tree_functions
 
 make_object = $(call make_bin_path, $(1)) : $(call make_src_path, $(1)); \
 @$(CXX) $(CXX_FLAGS) -c $$< $(addprefix -I, $(H_DIR)) -o $$@
@@ -36,6 +36,8 @@ prepare :
 	@mkdir -p $(BIN_DIR) $(LIB_DIR)
 
 $(call make_object, Bin_tree_basic)
+
+$(call make_object, Bin_tree_functions)
 
 clean:
 	@rm -rf $(BIN_DIR)
