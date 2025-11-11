@@ -15,19 +15,19 @@ int main(int const argc, char const *const *const argv) {
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);
 
+    BIN_TREE_CTOR(MAIN_CHECK_FUNC, cur_tree);
+    #undef FINAL_CODE
+    #define FINAL_CODE              \
+        Config_Dtor(&cur_config);   \
+        Bin_tree_Dtor(&cur_tree);
+
     FILE *dump_stream = nullptr;
     MAIN_CHECK_FUNC(fopen_s, &dump_stream, "./Visual_html/Tree_log.html", "w");
     #undef FINAL_CODE
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);   \
+        Bin_tree_Dtor(&cur_tree);   \
         fclose(dump_stream);
-
-    BIN_TREE_CTOR(MAIN_CHECK_FUNC, cur_tree);
-    #undef FINAL_CODE
-    #define FINAL_CODE              \
-        Config_Dtor(&cur_config);   \
-        fclose(dump_stream);        \
-        Bin_tree_Dtor(&cur_tree);
 
     Bin_tree_node *v1 = nullptr,
                   *v2 = nullptr,
