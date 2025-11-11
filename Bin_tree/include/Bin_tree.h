@@ -36,7 +36,7 @@ errno_t Bin_tree_node_Ctor(Bin_tree_node *node_ptr,
 
 errno_t Bin_tree_node_Dtor(Bin_tree_node *node_ptr);
 
-#define TREE_NODE_INVALID 1'000
+#define TREE_NODE_INVALID 0B10'000'000'000
 errno_t Bin_tree_node_verify(Bin_tree_node *node_ptr, errno_t *err_ptr);
 
 errno_t get_new_Bin_tree_node(Bin_tree_node **dest,
@@ -70,7 +70,9 @@ handler(Bin_tree_Ctor, &name)
 
 errno_t Bin_tree_Dtor(Bin_tree *tree_ptr);
 
-#define TREE_INVALID_STRUCTURE 0B10'000'000'000
+#define TREE_INVALID           0B10'000'000'000
+#define TREE_NULL_ROOT         0B100'000'000'000
+#define TREE_INVALID_STRUCTURE 0B1'000'000'000'000
 errno_t Bin_tree_verify(Bin_tree const *tree_ptr, errno_t *err_ptr);
 
 errno_t Bin_tree_visual_dump(Bin_tree const *tree_ptr, FILE *out_stream,
