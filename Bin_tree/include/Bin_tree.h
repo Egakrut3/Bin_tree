@@ -45,6 +45,10 @@ errno_t get_new_Bin_tree_node(Bin_tree_node **dest,
 
 errno_t Bin_subtree_Dtor(Bin_tree_node *node_ptr);
 
+errno_t Split_node(Bin_tree_node *node_ptr,
+                   Bin_tree_node **left_dest, Bin_tree_node **right_dest,
+                   const_tree_elem_t left_val, const_tree_elem_t right_val);
+
 
 
 struct Bin_tree {
