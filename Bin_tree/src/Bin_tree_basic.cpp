@@ -158,10 +158,12 @@ static void tree_dump(FILE *const out_stream, Bin_tree_node const *const cur_nod
     fprintf_s(out_stream, "\tnode%p [shape = plaintext color = %s style = \"\" "
                                      "label = <<TABLE BORDER=\"0\" CELLBORDER=\"1\" "
                                                      "BGCOLOR=\"#%06X\">"
-                                     "<TR><TD COLSPAN=\"2\" PORT=\"top\">"
+                                     "<TR><TD COLSPAN=\"2\" PORT=\"top\">[%p]</TD></TR>"
+                                     "<TR><TD COLSPAN=\"2\">"
                                          "VAL = " TREE_ELEM_FRM "</TD></TR>",
                           cur_node,
                           border_color, ptr_color(cur_node),
+                          cur_node,
                           cur_node->val);
 
     if (cur_node->left) {
@@ -201,8 +203,8 @@ static void tree_dump(FILE *const out_stream, Bin_tree_node const *const cur_nod
     }
 }
 
-errno_t Bin_tree_visual_dump(Bin_tree const *const tree_ptr, FILE *const out_stream,
-                            Position_info const from_where) { //TODO - add extra info and tabulation
+errno_t Bin_tree_visual_dump(Bin_tree const *const tree_ptr, FILE *const out_stream, size_t const id,
+                             Position_info const from_where) { //TODO - add extra info and tabulation
     assert(tree_ptr); assert(out_stream);
     ON_DEBUG(
     assert(tree_ptr->var_info.position.file_name); assert(tree_ptr->var_info.position.function_name);
@@ -212,6 +214,8 @@ errno_t Bin_tree_visual_dump(Bin_tree const *const tree_ptr, FILE *const out_str
 
     errno_t verify_err = 0;
     CHECK_FUNC(Bin_tree_verify, tree_ptr, &verify_err);
+
+    fprintf_s(out_stream, "<font size=\"7\">\n\tDump №%zu\n</font>\n\n", id);
 
     fprintf_s(out_stream, "<pre>\n");
 
@@ -263,10 +267,14 @@ errno_t Bin_tree_visual_dump(Bin_tree const *const tree_ptr, FILE *const out_str
         fprintf_s(dot_stream, "}");
 
         fclose(dot_stream);
-        #define DOT_OUTPUT_NAME "DOT_output.svg"
-        CHECK_FUNC(system, "dot -Tsvg " DOT_FILE_PATH " > ./Visual_html/" DOT_OUTPUT_NAME); //TODO - how to change filename
 
-        fprintf_s(out_stream, "\t<img src=\" " DOT_OUTPUT_NAME "\" width=1000/>\n");
+        size_t const SYS_STR_MAX_SIZE = 100;
+        char sys_str[SYS_STR_MAX_SIZE] = {};
+        sprintf_s(sys_str, SYS_STR_MAX_SIZE, "dot -Tsvg " DOT_FILE_PATH
+                                             " > ./Visual_html/DOT_output%zu.svg", id);
+        CHECK_FUNC(system, sys_str);
+
+        fprintf_s(out_stream, "\t<img src=\"DOT_output%zu.svg\" width=1000/>\n", id);
     }
 
     fprintf_s(out_stream, "\tis_valid = %d\n", tree_ptr->is_valid);

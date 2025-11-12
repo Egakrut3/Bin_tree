@@ -78,9 +78,9 @@ errno_t Bin_tree_Dtor(Bin_tree *tree_ptr);
 #define TREE_INVALID_STRUCTURE 0B1'000'000'000'000
 errno_t Bin_tree_verify(Bin_tree const *tree_ptr, errno_t *err_ptr);
 
-errno_t Bin_tree_visual_dump(Bin_tree const *tree_ptr, FILE *out_stream,
+errno_t Bin_tree_visual_dump(Bin_tree const *tree_ptr, FILE *out_stream, size_t id,
                              Position_info from_where);
-#define BIN_TREE_VISUAL_DUMP(name, out_stream, handler)                                         \
-handler(Bin_tree_visual_dump, &name, out_stream, Position_info{__FILE__, __func__, __LINE__})
+#define BIN_TREE_VISUAL_DUMP(name, out_stream, id, handler)                                         \
+handler(Bin_tree_visual_dump, &name, out_stream, id, Position_info{__FILE__, __func__, __LINE__})
 
 #endif

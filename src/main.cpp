@@ -64,7 +64,7 @@ int main(int const argc, char const *const *const argv) {
         Bin_tree_Dtor(&cur_tree);   \
         fclose(dump_stream);
 
-    BIN_TREE_VISUAL_DUMP(cur_tree, dump_stream, MAIN_CHECK_FUNC);
+    BIN_TREE_VISUAL_DUMP(cur_tree, dump_stream, 0, MAIN_CHECK_FUNC);
 
     colored_printf(GREEN, BLACK, "\n\n\nCOMMIT GITHUB\n\n");
     CLEAR_RESOURCES();
