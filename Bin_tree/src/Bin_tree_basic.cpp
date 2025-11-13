@@ -13,7 +13,8 @@ errno_t Bin_tree_Ctor(Bin_tree *const tree_ptr
 
     ON_DEBUG(tree_ptr->var_info = var_info;) //TODO - I copy pointers, so I mustn't clear it in Dtor
 
-    CHECK_FUNC(get_new_Bin_tree_node, &tree_ptr->root, nullptr, nullptr, INITIAL_VAL);
+    //CHECK_FUNC(get_new_Bin_tree_node, &tree_ptr->root, nullptr, nullptr, INITIAL_VAL);
+    CHECK_FUNC(get_new_Bin_tree_node, &tree_ptr->root, nullptr, nullptr, INITIAL_VAL, false);
 
     tree_ptr->is_valid = true;
     return 0;

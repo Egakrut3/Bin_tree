@@ -20,40 +20,19 @@ int main(int const argc, char const *const *const argv) {
         Config_Dtor(&cur_config);   \
         Bin_tree_Dtor(&cur_tree);
 
-    Bin_tree_node *v1 = nullptr,
-                  *v2 = nullptr,
-                  *v3 = nullptr,
-                  *v4 = nullptr,
-                  *v5 = nullptr,
-                  *v6 = nullptr;
+    FILE *in_stream = nullptr;
+    MAIN_CHECK_FUNC(fopen_s, &in_stream, "./Tree", "r");
+    #undef FINAL_CODE
+    #define FINAL_CODE              \
+        Config_Dtor(&cur_config);   \
+        Bin_tree_Dtor(&cur_tree);   \
+        fclose(in_stream);          \
+        in_stream = nullptr;
 
-    MAIN_CHECK_FUNC(get_new_Bin_tree_node, &v1, nullptr, nullptr, "v1");
-    MAIN_CHECK_FUNC(get_new_Bin_tree_node, &v2, nullptr, nullptr, "v2");
-    MAIN_CHECK_FUNC(get_new_Bin_tree_node, &v3, nullptr, nullptr, "v3");
-    MAIN_CHECK_FUNC(get_new_Bin_tree_node, &v4, nullptr, nullptr, "v4");
-    MAIN_CHECK_FUNC(get_new_Bin_tree_node, &v5, nullptr, nullptr, "v5");
-    MAIN_CHECK_FUNC(get_new_Bin_tree_node, &v6, nullptr, nullptr, "v6");
-
-    cur_tree.root->left  = v1;
-    cur_tree.root->right = v2;
-
-    v1->left  = v3;
-    v1->right = v4;
-
-    v2->left  = nullptr;
-    v2->right = nullptr;
-
-    v3->left  = nullptr;
-    v3->right = nullptr;
-
-    v4->left  = v5;
-    v4->right = v6;
-
-    v5->left  = nullptr;
-    v5->right = nullptr;
-
-    v6->left  = nullptr;
-    v6->right = nullptr;
+    char *str = nullptr;
+    MAIN_CHECK_FUNC(get_all_content, in_stream, nullptr, &str);
+    MAIN_CHECK_FUNC(Bin_tree_node_Dtor, cur_tree.root);
+    MAIN_CHECK_FUNC(str_read_subtree,  &cur_tree.root, str);
 
     FILE *dump_stream = nullptr;
     MAIN_CHECK_FUNC(fopen_s, &dump_stream, "./Visual_html/Tree_log.html", "w");

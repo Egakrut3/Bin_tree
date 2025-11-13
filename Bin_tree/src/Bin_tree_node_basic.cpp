@@ -5,12 +5,14 @@
 
 errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
                            Bin_tree_node *const left, Bin_tree_node *const right,
-                           tree_elem_t const val) {
+                           tree_elem_t const val, bool const need_copy) {
     assert(node_ptr); assert(!node_ptr->is_valid);
 
-    node_ptr->left  = left;
-    node_ptr->right = right;
-    TREE_ELEM_COPY(node_ptr->val, val);
+    node_ptr->left       = left;
+    node_ptr->right      = right;
+    //TREE_ELEM_COPY(node_ptr->val, val);
+    node_ptr->val        = val; //TODO - in order to reuse memory of buffer we've read from file, user must copy string themself where neccessary
+    node_ptr->need_copy  = need_copy;
 
     node_ptr->verify_used = false;
     node_ptr->is_valid    = true;
@@ -19,11 +21,11 @@ errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
 
 errno_t get_new_Bin_tree_node(Bin_tree_node **const dest,
                               Bin_tree_node *const left, Bin_tree_node *const right,
-                              tree_elem_t const val) {
+                              tree_elem_t const val, bool const need_copy) {
     assert(dest);
 
     CHECK_FUNC(My_calloc, (void **)dest, 1, sizeof(Bin_tree_node));
-    CHECK_FUNC(Bin_tree_node_Ctor, *dest, left, right, val);
+    CHECK_FUNC(Bin_tree_node_Ctor, *dest, left, right, val, need_copy);
 
     return 0;
 }
@@ -31,7 +33,7 @@ errno_t get_new_Bin_tree_node(Bin_tree_node **const dest,
 errno_t Bin_tree_node_Dtor(Bin_tree_node *const node_ptr) {
     assert(node_ptr); assert(node_ptr->is_valid);
 
-    TREE_ELEM_DTOR(node_ptr->val);
+    if (node_ptr->need_copy) { TREE_ELEM_DTOR(node_ptr->val); }
 
     node_ptr->is_valid = false;
     return 0;
