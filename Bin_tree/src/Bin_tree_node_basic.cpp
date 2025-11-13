@@ -119,7 +119,7 @@ static errno_t Bin_subtree_following_dot_dump(FILE *const out_stream, Bin_tree_n
         return 0;
     }
 
-    #undef  BORDER_COLO
+    #undef  BORDER_COLOR
     #define BORDER_COLOR      "black"
     #undef  EMPTY_COLOR
     #define EMPTY_COLOR       "lightgreen"
