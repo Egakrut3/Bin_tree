@@ -14,10 +14,10 @@ errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
     node_ptr->need_copy  = need_copy;
     if (node_ptr->need_copy) { TREE_ELEM_COPY(node_ptr->val, val); }
     else                     { node_ptr->val = val; }
-    //TODO - in order to reuse memory of buffer we've read from file, user must copy string themself where neccessary
+    //TODO - in order to reuse memory of buffer we've read from file, I must distinguish node, that I must clear and not
 
-    node_ptr->verify_used = false;
     node_ptr->is_valid    = true;
+    node_ptr->verify_used = false;
     return 0;
 }
 
@@ -132,11 +132,15 @@ static errno_t Bin_subtree_following_dot_dump(FILE *const out_stream, Bin_tree_n
                                      "label = <<TABLE BORDER=\"0\" CELLBORDER=\"1\" "
                                                      "BGCOLOR=\"#%06X\">"
                                      "<TR><TD COLSPAN=\"2\" PORT=\"top\">[%p]</TD></TR>"
+                                     "<TR><TD>need_copy = %d</TD><TD>is_valid = %d</TD></TR>"
+                                     "<TR><TD COLSPAN=\"2\">verify_used = %d</TD></TR>"
                                      "<TR><TD COLSPAN=\"2\">"
                                          "VAL = " TREE_ELEM_OUT_FRM "</TD></TR>",
                           cur_node,
                           ptr_color(cur_node),
                           cur_node,
+                          cur_node->need_copy, cur_node->is_valid,
+                          cur_node->verify_used,
                           cur_node->val);
 
     if (cur_node->left) {

@@ -12,7 +12,6 @@ do {                                    \
     CHECK_FUNC(My_strdup, &dest, src);  \
 } while (false)
 
-//TODO -
 #define TREE_ELEM_DTOR(src) \
 do {                        \
     free((char *)src);      \
@@ -28,8 +27,8 @@ struct Bin_tree_node {
     tree_elem_t   val;
     bool          need_copy;
 
-    bool          verify_used, //I don't want to use hash-map in verify
-                  is_valid;
+    bool          is_valid;
+    bool          verify_used; //I don't want to use hash-map in verify, because it is hard
 };
 
 errno_t Bin_tree_node_Ctor(Bin_tree_node *node_ptr,

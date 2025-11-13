@@ -10,7 +10,7 @@ errno_t split_node(Bin_tree_node *const node_ptr,
     ON_DEBUG(
     errno_t verify_err = 0;
     CHECK_FUNC(Bin_tree_node_verify, node_ptr, &verify_err);
-    if (verify_err) { return verify_err; }
+    if (verify_err) { PRINT_LINE(); return verify_err; }
     )
 
     CHECK_FUNC(get_new_Bin_tree_node, &node_ptr->left,  nullptr, nullptr, left_val,  left_need_copy);
@@ -63,7 +63,7 @@ static errno_t str_read_subtree_from_pos(Bin_tree_node **const dest,
     return INCORRECT_TREE_INPUT;
 }
 
-errno_t str_read_subtree(Bin_tree_node **const dest, char *const buffer) {
+errno_t str_read_subtree(Bin_tree_node **const dest, char *const buffer) { //TODO - make dump
     assert(dest); assert(buffer);
 
     char *cur_pos = buffer;

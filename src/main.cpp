@@ -76,7 +76,7 @@ int main(int const argc, char const *const *const argv) {
         free(str);                  \
         str = nullptr;
 
-    BIN_TREE_VISUAL_DUMP(cur_tree, dump_stream, 0, MAIN_CHECK_FUNC);
+    BIN_TREE_HTML_DUMP(cur_tree, dump_stream, 0, MAIN_CHECK_FUNC);
 
     colored_printf(GREEN, BLACK, "\n\n\nCOMMIT GITHUB\n\n");
     CLEAR_RESOURCES();
