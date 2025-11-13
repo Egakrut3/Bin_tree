@@ -94,7 +94,7 @@ errno_t My_scanf_s(size_t const count, char const *__restrict const format, ...)
     return 0;
 }
 
-errno_t My_strdup(char **const dest, char const *const src) {
+errno_t My_strdup(char const **const dest, char const *const src) {
     assert(dest); assert(src);
 
     char *ptr = strdup(src);

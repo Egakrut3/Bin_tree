@@ -1,7 +1,6 @@
 #include "Common.h"
 #include "Option_manager.h"
 #include "Bin_tree.h"
-//TODO - make Ctor clear all resources in case of fail
 
 int main(int const argc, char const *const *const argv) {
     assert(argc > 0); assert(argv);
@@ -62,7 +61,8 @@ int main(int const argc, char const *const *const argv) {
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);   \
         Bin_tree_Dtor(&cur_tree);   \
-        fclose(dump_stream);
+        fclose(dump_stream);        \
+        dump_stream = nullptr;
 
     BIN_TREE_VISUAL_DUMP(cur_tree, dump_stream, 0, MAIN_CHECK_FUNC);
 

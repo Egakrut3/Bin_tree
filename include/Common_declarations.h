@@ -64,6 +64,5 @@ struct Var_info {
 };
 
 size_t const CANARY = 0XFACE'FACE'FACE'FACE;
-#define ALREADY_DELETED 666
 
 #endif

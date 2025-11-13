@@ -36,7 +36,7 @@ all : prepare $(call make_bin_path, $(OBJ))
 test : all
 	@$(TARGET)
 
-#make list of childs
+#TODO - make list of childs
 prepare :
 	@make -C ./Bin_tree/
 	@mkdir -p $(BIN_DIR)
@@ -49,4 +49,4 @@ $(call make_object, main)
 
 clean:
 	@make clean -C ./Bin_tree/
-	@rm -rf (BIN_DIR)
+	@rm -rf $(BIN_DIR) ./Visual_html/

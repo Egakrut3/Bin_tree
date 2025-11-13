@@ -78,11 +78,7 @@ errno_t Config_Ctor(Config *const config_ptr, size_t const argc, char const *con
 
 errno_t Config_Dtor(Config *const config_ptr)
 {
-    assert(config_ptr);
-
-    if (!config_ptr->is_valid) {
-        return ALREADY_DELETED;
-    }
+    assert(config_ptr); assert(config_ptr->is_valid);
 
     config_ptr->is_valid = false;
     return 0;
