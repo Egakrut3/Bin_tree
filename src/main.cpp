@@ -27,7 +27,9 @@ int main(int const argc, char const *const *const argv) {
         Config_Dtor(&cur_config);   \
         Bin_tree_Dtor(&cur_tree);   \
         fclose(in_stream);          \
-        in_stream = nullptr;
+        in_stream = nullptr;        \
+        free(str);                  \
+        str = nullptr;
 
     char *str = nullptr;
     MAIN_CHECK_FUNC(get_all_content, in_stream, nullptr, &str);
@@ -38,7 +40,9 @@ int main(int const argc, char const *const *const argv) {
     #undef FINAL_CODE
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);   \
-        Bin_tree_Dtor(&cur_tree);
+        Bin_tree_Dtor(&cur_tree);   \
+        free(str);                  \
+        str = nullptr;
 
     FILE *out_stream = nullptr;
     MAIN_CHECK_FUNC(fopen_s, &out_stream, "./Tree_out", "w");
@@ -46,8 +50,10 @@ int main(int const argc, char const *const *const argv) {
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);   \
         Bin_tree_Dtor(&cur_tree);   \
-        fclose(out_stream);          \
-        out_stream = nullptr;
+        fclose(out_stream);         \
+        out_stream = nullptr;       \
+        free(str);                  \
+        str = nullptr;
 
     MAIN_CHECK_FUNC(write_subtree, cur_tree.root, out_stream);
     fclose(out_stream);
@@ -55,7 +61,9 @@ int main(int const argc, char const *const *const argv) {
     #undef FINAL_CODE
     #define FINAL_CODE              \
         Config_Dtor(&cur_config);   \
-        Bin_tree_Dtor(&cur_tree);
+        Bin_tree_Dtor(&cur_tree);   \
+        free(str);                  \
+        str = nullptr;
 
     FILE *dump_stream = nullptr;
     MAIN_CHECK_FUNC(fopen_s, &dump_stream, "./Visual_html/Tree_log.html", "w");
@@ -64,7 +72,9 @@ int main(int const argc, char const *const *const argv) {
         Config_Dtor(&cur_config);   \
         Bin_tree_Dtor(&cur_tree);   \
         fclose(dump_stream);        \
-        dump_stream = nullptr;
+        dump_stream = nullptr;      \
+        free(str);                  \
+        str = nullptr;
 
     BIN_TREE_VISUAL_DUMP(cur_tree, dump_stream, 0, MAIN_CHECK_FUNC);
 

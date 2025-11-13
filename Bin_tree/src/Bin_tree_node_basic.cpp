@@ -11,8 +11,10 @@ errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
     node_ptr->left       = left;
     node_ptr->right      = right;
     //TREE_ELEM_COPY(node_ptr->val, val);
-    node_ptr->val        = val; //TODO - in order to reuse memory of buffer we've read from file, user must copy string themself where neccessary
     node_ptr->need_copy  = need_copy;
+    if (node_ptr->need_copy) { TREE_ELEM_COPY(node_ptr->val, val); }
+    else                     { node_ptr->val = val; }
+    //TODO - in order to reuse memory of buffer we've read from file, user must copy string themself where neccessary
 
     node_ptr->verify_used = false;
     node_ptr->is_valid    = true;
@@ -131,7 +133,7 @@ static errno_t Bin_subtree_following_dot_dump(FILE *const out_stream, Bin_tree_n
                                                      "BGCOLOR=\"#%06X\">"
                                      "<TR><TD COLSPAN=\"2\" PORT=\"top\">[%p]</TD></TR>"
                                      "<TR><TD COLSPAN=\"2\">"
-                                         "VAL = " TREE_ELEM_FRM "</TD></TR>",
+                                         "VAL = " TREE_ELEM_OUT_FRM "</TD></TR>",
                           cur_node,
                           ptr_color(cur_node),
                           cur_node,
