@@ -1,4 +1,5 @@
 *.txt
 bin/
 Visual_html/
-Tree
+Tree_in
+Tree_out

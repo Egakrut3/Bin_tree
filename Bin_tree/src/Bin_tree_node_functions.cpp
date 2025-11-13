@@ -20,7 +20,7 @@ errno_t split_node(Bin_tree_node *const node_ptr,
 }
 
 static errno_t str_read_subtree_from_pos(Bin_tree_node **const dest,
-                                         char **const cur_pos) {
+                                         char **const cur_pos) { //TODO - works only for strings
     assert(dest); assert(cur_pos); assert(*cur_pos);
 
     fprintf_s(stderr, "Start:\n%s\n", *cur_pos);
@@ -77,5 +77,22 @@ errno_t str_copy_read_subtree(Bin_tree_node **const dest, char *const buffer) { 
 }
 
 errno_t read_subtree(Bin_tree_node **const dest, FILE *const in_stream) { //TODO -
+    return 0;
+}
+
+errno_t write_subtree(Bin_tree_node *const src, FILE *const out_stream) {
+    assert(out_stream);
+
+    if (!src) {
+        fprintf_s(out_stream, "nil ");
+
+        return 0;
+    }
+
+    fprintf_s(out_stream, "(\"" TREE_ELEM_OUT_FRM "\" ", src->val);
+    CHECK_FUNC(write_subtree, src->left,  out_stream);
+    CHECK_FUNC(write_subtree, src->right, out_stream);
+    fprintf_s(out_stream, ")");
+
     return 0;
 }

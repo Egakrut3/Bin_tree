@@ -4,8 +4,8 @@
 #include "Common.h"
 
 typedef char const * tree_elem_t;
-#define TREE_ELEM_STR "string"
-#define TREE_ELEM_FRM "%s"
+#define TREE_ELEM_STR     "string"
+#define TREE_ELEM_OUT_FRM "%s"
 
 #define TREE_ELEM_COPY(dest, src)       \
 do {                                    \
@@ -61,5 +61,7 @@ errno_t split_node(Bin_tree_node *node_ptr,
 errno_t str_read_subtree(Bin_tree_node **dest, char *buffer);
 errno_t str_copy_read_subtree(Bin_tree_node **dest, char *buffer);
 errno_t read_subtree(Bin_tree_node **dest, FILE *in_stream);
+
+errno_t write_subtree(Bin_tree_node *src, FILE *out_stream);
 
 #endif
