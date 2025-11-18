@@ -1,6 +1,5 @@
 #include "Bin_tree_node.h"
 
-#undef FINAL_CODE
 #define FINAL_CODE
 
 errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
@@ -10,11 +9,10 @@ errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
 
     node_ptr->left       = left;
     node_ptr->right      = right;
-    //TREE_ELEM_COPY(node_ptr->val, val);
     node_ptr->need_copy  = need_copy;
     if (node_ptr->need_copy) { TREE_ELEM_COPY(node_ptr->val, val); }
     else                     { node_ptr->val = val; }
-    //TODO - in order to reuse memory of buffer we've read from file, I must distinguish node, that I must clear and not
+    // in order to reuse memory of buffer we've read from file, I must distinguish node, that I must clear and not
 
     node_ptr->is_valid    = true;
     node_ptr->verify_used = false;
@@ -24,8 +22,6 @@ errno_t Bin_tree_node_Ctor(Bin_tree_node *const node_ptr,
 errno_t get_new_Bin_tree_node(Bin_tree_node **const dest,
                               Bin_tree_node *const left, Bin_tree_node *const right,
                               tree_elem_t const val, bool const need_copy) {
-    assert(dest);
-
     CHECK_FUNC(My_calloc, (void **)dest, 1, sizeof(Bin_tree_node));
     CHECK_FUNC(Bin_tree_node_Ctor, *dest, left, right, val, need_copy);
 
@@ -44,8 +40,7 @@ errno_t Bin_tree_node_Dtor(Bin_tree_node *const node_ptr) {
 errno_t Bin_tree_node_verify(Bin_tree_node const *const node_ptr, errno_t *const err_ptr) {
     assert(node_ptr); assert(err_ptr);
 
-    if (!node_ptr->is_valid) { *err_ptr |= TREE_NODE_INVALID; }
-
+    if (!node_ptr->is_valid)   { *err_ptr |= TREE_NODE_INVALID; }
     if (node_ptr->verify_used) { *err_ptr |= TREE_NODE_VERIFY_USED; }
 
     return 0;
@@ -113,20 +108,16 @@ static uint32_t ptr_color(void const *const ptr) {
 }
 
 static errno_t Bin_subtree_following_dot_dump(FILE *const out_stream, Bin_tree_node const *const cur_node) {
+    #define BORDER_COLOR      "black"
+    #define EMPTY_COLOR       "lightgreen"
+    #define LEFT_ARROW_COLOR  "red"
+    #define RIGHT_ARROW_COLOR "blue"
+
     assert(out_stream);
 
     if (!cur_node) {
         return 0;
     }
-
-    #undef  BORDER_COLOR
-    #define BORDER_COLOR      "black"
-    #undef  EMPTY_COLOR
-    #define EMPTY_COLOR       "lightgreen"
-    #undef  LEFT_ARROW_COLOR
-    #define LEFT_ARROW_COLOR  "red"
-    #undef  RIGHT_ARROW_COLOR
-    #define RIGHT_ARROW_COLOR "blue"
 
     fprintf_s(out_stream, "\tnode%p [shape = plaintext color = " BORDER_COLOR " style = \"\" "
                                      "label = <<TABLE BORDER=\"0\" CELLBORDER=\"1\" "
@@ -176,12 +167,17 @@ static errno_t Bin_subtree_following_dot_dump(FILE *const out_stream, Bin_tree_n
     }
 
     return 0;
+
+    #undef BORDER_COLOR
+    #undef EMPTY_COLOR
+    #undef LEFT_ARROW_COLOR
+    #undef RIGHT_ARROW_COLOR
 }
 
 errno_t Bin_subtree_dot_dump(FILE *const out_stream, Bin_tree_node const *const cur_node) {
-    assert(out_stream);
-    #undef BACKGROUND_COLOR
     #define BACKGROUND_COLOR  "white"
+
+    assert(out_stream);
 
     fprintf_s(out_stream, "digraph {\n");
     fprintf_s(out_stream, "\tnode [shape = octagon style = filled fillcolor = red "
@@ -195,4 +191,8 @@ errno_t Bin_subtree_dot_dump(FILE *const out_stream, Bin_tree_node const *const 
     fprintf_s(out_stream, "}");
 
     return 0;
+
+    #undef BACKGROUND_COLOR
 }
+
+#undef FINAL_CODE

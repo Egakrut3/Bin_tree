@@ -1,6 +1,5 @@
 #include "Bin_tree.h"
 
-#undef FINAL_CODE
 #define FINAL_CODE
 
 errno_t Bin_tree_Ctor(Bin_tree *const tree_ptr
@@ -13,7 +12,6 @@ errno_t Bin_tree_Ctor(Bin_tree *const tree_ptr
 
     ON_DEBUG(tree_ptr->var_info = var_info;)
 
-    //CHECK_FUNC(get_new_Bin_tree_node, &tree_ptr->root, nullptr, nullptr, INITIAL_VAL);
     CHECK_FUNC(get_new_Bin_tree_node, &tree_ptr->root, nullptr, nullptr, INITIAL_VAL, false);
 
     tree_ptr->is_valid = true;
@@ -32,25 +30,21 @@ errno_t Bin_tree_Dtor(Bin_tree *const tree_ptr) {
 errno_t Bin_tree_verify(Bin_tree const *const tree_ptr, errno_t *const err_ptr) {
     assert(tree_ptr); assert(err_ptr);
 
-    if (!tree_ptr->is_valid) {
-        *err_ptr |= TREE_INVALID;
-    }
-
-    if (!tree_ptr->root) {
-        *err_ptr |= TREE_NULL_ROOT;
-    }
+    if (!tree_ptr->is_valid) { *err_ptr |= TREE_INVALID; }
+    if (!tree_ptr->root)     { *err_ptr |= TREE_NULL_ROOT; }
 
     CHECK_FUNC(Bin_subtree_verify, tree_ptr->root, err_ptr);
 
     return 0;
 }
 
+#undef FINAL_CODE
+
 errno_t Bin_tree_html_dump(Bin_tree const *const tree_ptr, FILE *const out_stream, size_t const id,
                            Position_info const from_where,
                            bool const need_extra_info, size_t const tab_count) {
     assert(tree_ptr); assert(out_stream);
 
-    #undef FINAL_CODE
     #define FINAL_CODE
 
     char *tab_str = nullptr;
@@ -58,6 +52,7 @@ errno_t Bin_tree_html_dump(Bin_tree const *const tree_ptr, FILE *const out_strea
     for (size_t i = 0; i < tab_count; ++i) {
         tab_str[i] = '\t';
     }
+
     #undef FINAL_CODE
     #define FINAL_CODE  \
         free(tab_str);
@@ -115,17 +110,20 @@ errno_t Bin_tree_html_dump(Bin_tree const *const tree_ptr, FILE *const out_strea
     }
 
     if (verify_err & TREE_INVALID_STRUCTURE) {
-        fprintf_s(out_stream, "%s\tInvalid tree structure\n", tab_str);
+        fprintf_s(out_stream, "%s\tInvalid tree structure\n", tab_str); //TODO - probably bad practice
     }
     else {
-        FILE *dot_stream = nullptr;
         #define DOT_FILE_PATH "./Visual_html/DOT_file.txt"
+
+        FILE *dot_stream = nullptr;
         CHECK_FUNC(fopen_s, &dot_stream, DOT_FILE_PATH, "w");
+
         #undef FINAL_CODE
         #define FINAL_CODE          \
             free(tab_str);          \
             fclose(dot_stream);     \
             dot_stream = nullptr;
+
         CHECK_FUNC(Bin_subtree_dot_dump, dot_stream, tree_ptr->root);
         fclose(dot_stream);
 
@@ -139,6 +137,8 @@ errno_t Bin_tree_html_dump(Bin_tree const *const tree_ptr, FILE *const out_strea
                                              " > ./Visual_html/DOT_output%zu.svg", id);
         CHECK_FUNC(system, sys_str);
         fprintf_s(out_stream, "%s\t<img src=\"DOT_output%zu.svg\" width=1000/>\n", tab_str, id);
+
+        #undef DOT_FILE_PATH
     }
 
     fprintf_s(out_stream, "%s\tis_valid = %d\n", tab_str, tree_ptr->is_valid);
@@ -148,4 +148,6 @@ errno_t Bin_tree_html_dump(Bin_tree const *const tree_ptr, FILE *const out_strea
     fprintf_s(out_stream, "%s</pre>\n", tab_str);
 
     return 0;
+
+    #undef FINAL_CODE
 }

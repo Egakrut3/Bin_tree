@@ -1,6 +1,5 @@
 #include "Bin_tree_node.h"
 
-#undef FINAL_CODE
 #define FINAL_CODE
 
 errno_t split_node(Bin_tree_node *const node_ptr,
@@ -19,8 +18,8 @@ errno_t split_node(Bin_tree_node *const node_ptr,
     return 0;
 }
 
-static errno_t str_read_subtree_from_pos(Bin_tree_node **const dest,
-                                         char **const cur_pos) { //TODO - works only for strings
+static errno_t str_read_subtree_from_pos(Bin_tree_node **const dest, //TODO - make dump not in console
+                                         char **const cur_pos) {     //TODO - works only for strings
     assert(dest); assert(cur_pos); assert(*cur_pos);
 
     fprintf_s(stderr, "Start:\n%s\n", *cur_pos);
@@ -54,7 +53,9 @@ static errno_t str_read_subtree_from_pos(Bin_tree_node **const dest,
         return 0;
     }
 
-    if (*(*cur_pos)++ == 'n' and *(*cur_pos)++ == 'i' and *(*cur_pos)++ == 'l') {
+    if (*(*cur_pos)++ == 'n' and
+        *(*cur_pos)++ == 'i' and
+        *(*cur_pos)++ == 'l') {
         *dest = nullptr;
 
         return 0;
@@ -63,7 +64,7 @@ static errno_t str_read_subtree_from_pos(Bin_tree_node **const dest,
     return INCORRECT_TREE_INPUT;
 }
 
-errno_t str_read_subtree(Bin_tree_node **const dest, char *const buffer) { //TODO - make dump
+errno_t str_read_subtree(Bin_tree_node **const dest, char *const buffer) {
     assert(dest); assert(buffer);
 
     char *cur_pos = buffer;

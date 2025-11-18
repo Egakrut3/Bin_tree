@@ -15,20 +15,20 @@ struct Bin_tree {
 errno_t Bin_tree_Ctor(Bin_tree *const tree_ptr
            ON_DEBUG(, Var_info var_info));
 #ifdef _DEBUG
-#define BIN_TREE_CTOR(handler, name)                                    \
+#define BIN_TREE_CREATE(handler, name)                                  \
 Bin_tree name = {};                                                     \
 handler(Bin_tree_Ctor, &name,                                           \
         Var_info{Position_info{__FILE__, __func__, __LINE__}, #name})
 #else
-#define BIN_TREE_CTOR(handler, name)                                    \
+#define BIN_TREE_CREATE(handler, name)                                  \
 Bin_tree name = {};                                                     \
 handler(Bin_tree_Ctor, &name)
 #endif
 
 errno_t Bin_tree_Dtor(Bin_tree *tree_ptr);
 
-#define TREE_INVALID           0B10'000'000'000'000
-#define TREE_NULL_ROOT         0B100'000'000'000'000
+#define TREE_INVALID   0B10'000'000'000'000
+#define TREE_NULL_ROOT 0B100'000'000'000'000
 errno_t Bin_tree_verify(Bin_tree const *tree_ptr, errno_t *err_ptr);
 
 errno_t Bin_tree_html_dump(Bin_tree const *tree_ptr, FILE *out_stream, size_t id,

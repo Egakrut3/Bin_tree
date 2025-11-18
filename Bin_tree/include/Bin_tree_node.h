@@ -41,8 +41,8 @@ errno_t get_new_Bin_tree_node(Bin_tree_node **dest,
 
 errno_t Bin_tree_node_Dtor(Bin_tree_node *node_ptr);
 
-#define TREE_NODE_INVALID      0B10'000'000'000
-#define TREE_NODE_VERIFY_USED  0B100'000'000'000
+#define TREE_NODE_INVALID     0B10'000'000'000
+#define TREE_NODE_VERIFY_USED 0B100'000'000'000
 errno_t Bin_tree_node_verify(Bin_tree_node const *node_ptr, errno_t *err_ptr);
 
 errno_t Bin_subtree_Dtor(Bin_tree_node *node_ptr);
